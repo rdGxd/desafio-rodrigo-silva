@@ -39,7 +39,7 @@ export class CaixaDaLanchonete {
         if (!carrinho[codigo]) {
           carrinho[codigo] = 0;
         }
-        carrinho[codigo] += parseInt(quantidade);
+        carrinho[codigo] += Number(quantidade);
       }
       if (codigo === "chantily") {
         if (!carrinho["cafe"]) {
@@ -73,7 +73,3 @@ export class CaixaDaLanchonete {
 
 // Exemplos de uso:
 const caixa = new CaixaDaLanchonete();
-
-console.log(caixa.calcularValorDaCompra("debito", ["chantily,1"])); // "Item extra não pode ser pedido sem o principal"
-console.log(caixa.calcularValorDaCompra("debito", ["cafe,0", "chantily,1"])); // "R$ 4,50"
-console.log(caixa.calcularValorDaCompra("credito", ["combo1,1", "cafe,2"])); // "R$ 15,96"
