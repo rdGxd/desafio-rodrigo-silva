@@ -77,11 +77,8 @@ export class CaixaDaLanchonete {
     }
 
     // Aplicação de desconto ou acréscimo com base na forma de pagamento
-    if (formaDePagamento === "dinheiro") {
-      valorTotal *= 0.95;
-    } else if (formaDePagamento === "credito") {
-      valorTotal *= 1.03;
-    }
+    if (formaDePagamento === "dinheiro") valorTotal -= (valorTotal * 5) / 100;
+    if (formaDePagamento === "credito") valorTotal += (valorTotal * 3) / 100;
 
     // Retorno do valor total formatado como uma string
     return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
