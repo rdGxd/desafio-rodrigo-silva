@@ -29,9 +29,7 @@ export class CaixaDaLanchonete {
 
       // Checando quantidade do item
       const checandoQuantidade = Number(quantidade);
-      if (checandoQuantidade <= 0) {
-        return "Quantidade inválida!";
-      }
+      if (checandoQuantidade <= 0) return "Quantidade inválida!";
 
       // Verificando se o item existe no cardápio
       if (!this.cardapio[codigo]) return "Item inválido!";
@@ -48,11 +46,13 @@ export class CaixaDaLanchonete {
           return "Item extra não pode ser pedido sem o principal";
         }
       }
+
       carrinho.push(codigo);
 
       // Calculando o valor total do carrinho
       valorTotal += this.cardapio[codigo] * checandoQuantidade;
     }
+
     if (carrinho.length === 0) {
       return "Não há itens no carrinho de compra!";
     } else {
