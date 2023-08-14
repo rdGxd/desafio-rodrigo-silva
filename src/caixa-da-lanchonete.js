@@ -38,19 +38,13 @@ export class CaixaDaLanchonete {
       if (checandoQuantidade <= 0) return "Quantidade inválida!";
 
       // Verificação se o item está no cardápio
-      if (!this.cardapio[codigo]) {
-        return "Item inválido!";
-      }
+      if (!this.cardapio[codigo]) return "Item inválido!";
 
       // Verificação de condições para adicionar o item ao carrinho
-      if (
-        (this.cardapio[codigo] && codigo !== "chantily") ||
-        (this.cardapio[codigo] && codigo !== "queijo")
-      ) {
+      if (this.cardapio[codigo]) {
         // Criação ou incremento da quantidade do item no carrinho
-        if (!carrinho[codigo]) {
-          carrinho[codigo] = 0;
-        }
+        if (!carrinho[codigo]) carrinho[codigo] = 0;
+
         carrinho[codigo] += Number(quantidade);
       }
       // Verificação de itens extras sem o item principal correspondente
@@ -84,3 +78,19 @@ export class CaixaDaLanchonete {
     return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
   }
 }
+
+const exemplo1 = new CaixaDaLanchonete().calcularValorDaCompra("debito", [
+  "chantily,1",
+]);
+
+const exemplo2 = new CaixaDaLanchonete().calcularValorDaCompra("debito", [
+  "cafe,1",
+  "chantily,1",
+]);
+
+const exemplo3 = new CaixaDaLanchonete().calcularValorDaCompra("credito", [
+  "combo1,1",
+  "cafe,2",
+]);
+
+console.log(`${exemplo1}\n ${exemplo2}\n ${exemplo3}`);
