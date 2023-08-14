@@ -1,7 +1,6 @@
-// Definição da classe CaixaDaLanchonete
 export class CaixaDaLanchonete {
   constructor() {
-    // Inicialização do cardápio com itens e seus preços correspondentes
+    // Inicializando o cardápio com os preços dos itens
     this.cardapio = {
       cafe: 3.0,
       chantily: 1.5,
@@ -14,83 +13,53 @@ export class CaixaDaLanchonete {
     };
   }
 
-  // Método para calcular o valor total da compra
-  calcularValorDaCompra(formaDePagamento, itens) {
-    // Lista de formas de pagamento válidas
-    const formasDePagamentoValidas = ["debito", "credito", "dinheiro"];
+  calcularValorDaCompra(formaPagamento, itens) {
+    const formasValidas = ["debito", "dinheiro", "credito"];
 
-    // Verificação da forma de pagamento válida
-    if (!formasDePagamentoValidas.includes(formaDePagamento)) {
+    // Verificando se a forma de pagamento é válida
+    if (!formasValidas.includes(formaPagamento)) {
       return "Forma de pagamento inválida!";
     }
 
-    // Inicialização do carrinho de compras vazio e valor total
-    const carrinho = {};
+    const carrinho = [];
     let valorTotal = 0;
 
-    // Loop para processar cada item no pedido
     for (const itemInfo of itens) {
-      // Separação do código do item e sua quantidade
       const [codigo, quantidade] = itemInfo.split(",");
 
-      // Conversão da quantidade para número e verificação se é válida
-      let checandoQuantidade = Number(quantidade);
-      if (checandoQuantidade <= 0) return "Quantidade inválida!";
+      // Checando quantidade do item
+      const checandoQuantidade = Number(quantidade);
+      if (checandoQuantidade <= 0) {
+        return "Quantidade inválida!";
+      }
 
-      // Verificação se o item está no cardápio
+      // Verificando se o item existe no cardápio
       if (!this.cardapio[codigo]) return "Item inválido!";
 
-      // Verificação de condições para adicionar o item ao carrinho
-      if (this.cardapio[codigo]) {
-        // Criação ou incremento da quantidade do item no carrinho
-        if (!carrinho[codigo]) carrinho[codigo] = 0;
-
-        carrinho[codigo] += Number(quantidade);
-      }
-      // Verificação de itens extras sem o item principal correspondente
+      // Verificando se os itens extras estão sendo pedidos com o item principal
       if (codigo === "chantily") {
-        if (!carrinho["cafe"]) {
+        if (!carrinho.includes("cafe")) {
           return "Item extra não pode ser pedido sem o principal";
         }
       }
+
       if (codigo === "queijo") {
-        if (!carrinho["sanduiche"]) {
+        if (!carrinho.includes("sanduiche")) {
           return "Item extra não pode ser pedido sem o principal";
         }
       }
-    }
+      carrinho.push(codigo);
 
-    // Verificação se o carrinho está vazio
-    if (Object.values(carrinho).length === 0) {
+      // Calculando o valor total do carrinho
+      valorTotal += this.cardapio[codigo] * checandoQuantidade;
+    }
+    if (carrinho.length === 0) {
       return "Não há itens no carrinho de compra!";
+    } else {
+      // Aplicando desconto ou acréscimo de acordo com a forma de pagamento
+      if (formaPagamento === "dinheiro") valorTotal -= (valorTotal * 5) / 100;
+      if (formaPagamento === "credito") valorTotal += (valorTotal * 3) / 100;
+      return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
     }
-
-    // Cálculo do valor total da compra com base no carrinho
-    for (const codigo in carrinho) {
-      valorTotal += this.cardapio[codigo] * carrinho[codigo];
-    }
-
-    // Aplicação de desconto ou acréscimo com base na forma de pagamento
-    if (formaDePagamento === "dinheiro") valorTotal -= (valorTotal * 5) / 100;
-    if (formaDePagamento === "credito") valorTotal += (valorTotal * 3) / 100;
-
-    // Retorno do valor total formatado como uma string
-    return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
   }
 }
-
-const exemplo1 = new CaixaDaLanchonete().calcularValorDaCompra("debito", [
-  "chantily,1",
-]);
-
-const exemplo2 = new CaixaDaLanchonete().calcularValorDaCompra("debito", [
-  "cafe,1",
-  "chantily,1",
-]);
-
-const exemplo3 = new CaixaDaLanchonete().calcularValorDaCompra("credito", [
-  "combo1,1",
-  "cafe,2",
-]);
-
-console.log(`${exemplo1}\n ${exemplo2}\n ${exemplo3}`);
