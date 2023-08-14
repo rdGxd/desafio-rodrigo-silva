@@ -61,7 +61,7 @@ export class CaixaDaLanchonete {
     }
 
     // Verificação se o carrinho está vazio
-    if (Object.keys(carrinho).length === 0) {
+    if (Object.values(carrinho).length === 0) {
       return "Não há itens no carrinho de compra!";
     }
 
